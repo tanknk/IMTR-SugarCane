@@ -133,7 +133,7 @@ def train():
 
     # บันทึกแบบจำลอง
     # โดยปกติแล้วจะบันทึกอยู่ในรูปแบบ .pt หรือ .pth
-    torch.save(model, 'cnn_model.pt')
+    # torch.save(model, 'cnn_model.pt')
     
     with torch.no_grad():
         output = model(test_x)
@@ -154,7 +154,7 @@ def test():
 
     """ โหลดแบบจำลอง """
     # โหลดแบบจำลองจากโฟลเดอร์ Model ที่มีชื่อว่า 'cnn_model.pt'
-    model = torch.load('model/new/cnn_model.pt')
+    model = torch.load('model/cnn_model.pt')
     
     """ โหลดข้อมูลรูปภาพ """
     # กำหนดที่อยู่ของรูปภาพ
