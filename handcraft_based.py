@@ -127,7 +127,7 @@ def train():
     print("KNN prediction: ", knn_pred)
 
     # บันทึกแบบจำลอง KNN (ในกรณีที่ต้องการบันทึกแบบจำลอง KNN)
-    # dump(knn, 'knn_model.joblib')
+    dump(knn, 'knn_model.joblib')
 
 def test():
     """
