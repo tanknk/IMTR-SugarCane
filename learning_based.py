@@ -132,7 +132,7 @@ def train():
 
 
     # บันทึกแบบจำลอง
-    # โดยปกติแล้วจะบันทึกอยู่ในรูปแบบ .pt หรือ .pth
+    # โดยปกติแล้วจะบันทึกอยู่ในรูปแบบ .pt หรือ .pth (ในกรณีที่ต้องการบันทึกแบบจำลอง)
     # torch.save(model, 'cnn_model.pt')
     
     with torch.no_grad():
@@ -194,5 +194,5 @@ def test():
     print("Prediction:" , *list(map(lambda x:  list_name[x], predictions)))
 
 
-# train()
+# train() # ในกรณีที่ต้องการสร้างและฝึกฝนแบบจำลองใหม่
 test()
