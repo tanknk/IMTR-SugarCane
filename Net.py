@@ -52,7 +52,7 @@ class Net(Module):
         """ Classification """
         # สร้างเลเยอร์ของ Linear
         self.linear_layers = Sequential(
-            Linear(32 * 1 * 1, 6)
+            Linear(32 * 2 * 2, 6)
         )   
         
     # กำหนดลำดับการทำงานของโครงสร้าง

@@ -58,7 +58,6 @@ def train():
                 # เพิ่มรูปภาพและ เพิ่ม class เข้า list สำหรับการฝึกสอน
                 featureTr.append(img)
                 labelTr.append(classname)
-                print(classname)
 
                 featureTr.append(img1)
                 labelTr.append(classname)
@@ -102,7 +101,7 @@ def train():
     train_losses = []
     
     # กำหนดจำนวนรอบการฝึกสอน
-    n_epochs = 30
+    n_epochs = 20
 
     # ฝึกสอนแบบจำลอง
     for epoch in t.tqdm(range(n_epochs)):
@@ -136,7 +135,7 @@ def train():
 
     # บันทึกแบบจำลอง
     # โดยปกติแล้วจะบันทึกอยู่ในรูปแบบ .pt หรือ .pth
-    # torch.save(model, 'cnn_model.pt')
+    torch.save(model, 'cnn_model.pt')
     
     with torch.no_grad():
         output = model(test_x)
@@ -146,6 +145,7 @@ def train():
 
     # แสดงค่าความแม่นยำของแบบจำลอง
     print("Accuracy:", sm.accuracy_score(test_y, predictions) * 100, '%')
+    print(test_y)
 
 def test():
     """
@@ -156,11 +156,11 @@ def test():
 
     """ โหลดแบบจำลอง """
     # โหลดแบบจำลองจากโฟลเดอร์ Model ที่มีชื่อว่า 'cnn_model.pt'
-    model = torch.load('model/cnn_model.pt')
+    model = torch.load('model/new/cnn_model.pt')
     
     """ โหลดข้อมูลรูปภาพ """
     # กำหนดที่อยู่ของรูปภาพ
-    image_path = 'dataset/Tr/yellow/DSC00097.JPG'
+    image_path = 'dataset/Tr/green/DSC00054.JPG'
     
     # โหลดข้อมูลรูปภาพเข้าสู่โปรแกรม
     img = imread(image_path, as_gray=True)
@@ -194,7 +194,6 @@ def test():
     predictions = np.argmax(prob, axis=1)
     
     print("Prediction:" , *list(map(lambda x:  list_name[x], predictions)))
-    print(predictions)
 
 
 # train()
