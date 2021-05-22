@@ -95,10 +95,10 @@ def train():
     
     # ดึงรูปภาพจากแต่ละ Class ในโฟลเดอร์สำหรับฝึกสอน
     for classname in t.tqdm(allClass.values()):
-        for id in listdir('Tr/' + classname):
+        for id in listdir('dataset/Tr/' + classname):
             if id.endswith(".JPG"):
-                image1 = cv2.imread('Tr/' + classname + '/' + id)       # ดึงรูปภาพสี
-                image2 = cv2.imread('Tr/' + classname + '/' + id, 0)    # ดึงรูปภาพระดับสีเทา
+                image1 = cv2.imread('dataset/Tr/' + classname + '/' + id)       # ดึงรูปภาพสี
+                image2 = cv2.imread('dataset/Tr/' + classname + '/' + id, 0)    # ดึงรูปภาพระดับสีเทา
                 featureExtract(image1, image2, classname, featureTr, labelTr)
                 
                 # ทำการกลับภาพ (Flip) เพื่อทำ Data augmentation -> เพื่อเพิ่มชุดข้อมูล (dataset)
@@ -139,7 +139,7 @@ def test():
     labelTs = []    # labelTs ใช้เก็บ ชื่อของ Class เพื่อนำไปจับกับค่าใน featureTs
     
     # ที่อยู่ของรูปภาพที่ใช้สำหรับทดสอบ
-    path = "Tr/yellow/DSC00267.jpg" 
+    path = "dataset/Tr/yellow/DSC00267.jpg" 
 
     # ดึงแบบจำลองที่บันทึกไว้มาใช้งาน
     knn_model = load('Classifier/knn_model.joblib')

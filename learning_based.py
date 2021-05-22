@@ -20,16 +20,6 @@ from torch.autograd import Variable
 from torch.nn import CrossEntropyLoss
 from torch.optim import SGD
 
-
-# allClass = {    # allClass เป็น Dict ที่มี key เป็นเลข 1-6 โดยมี value เป็นชื่อ Class
-#         1: 'green',
-#         2: 'red',
-#         3: 'ring',
-#         4: 'spot',
-#         5: 'white',
-#         6: 'yellow'
-#     }
-
 list_name = ['green', 'red', 'ring', 'spot', 'white', 'yellow'] # list_name เป็น List ที่ใช้สำหรับข้ารหัสชื่อ Class เป็นตัวเลข
 
 def train():
@@ -42,10 +32,10 @@ def train():
     
     """ โหลดข้อมูลรูปภาพ """
     for classname in t.tqdm(list_name):
-        for id in listdir('Tr/' + classname):
+        for id in listdir('dataset/Tr/' + classname):
             if id.endswith(".JPG"):
                 # โหลดข้อมูลรูปภาพเข้าสู่โปรแกรม
-                img = imread('Tr/' + classname + '/' + id, as_gray=True)
+                img = imread('dataset/Tr/' + classname + '/' + id, as_gray=True)
                 
                 # กลับ (Flip) รูปภาพสำหรับทำ Data Augmentaion -> เพื่อเพิ่มชุดข้อมูล (dataset)
                 img1 = cv2.flip(img, 1)
@@ -170,7 +160,7 @@ def test():
     
     """ โหลดข้อมูลรูปภาพ """
     # กำหนดที่อยู่ของรูปภาพ
-    image_path = 'Tr/yellow/DSC00097.JPG'
+    image_path = 'dataset/Tr/yellow/DSC00097.JPG'
     
     # โหลดข้อมูลรูปภาพเข้าสู่โปรแกรม
     img = imread(image_path, as_gray=True)
