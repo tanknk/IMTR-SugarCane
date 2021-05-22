@@ -1,14 +1,23 @@
+# ไลบรารี่พื้นฐาน
 import cv2
 import tqdm as t
 import numpy as np
-import sklearn.neighbors as sn
-import skimage.feature as skf
-import sklearn.metrics as sm
-import sklearn.model_selection as sms
-from joblib import dump, load
 from os import listdir
+from joblib import dump, load
 
-allClass = {    # allClass เป็น dict ที่มี key เป็นเลข 1-6 โดยมี value เป็นชื่อ Class
+# ไลบรารี่สำหรับแบบจำลอง KNN
+import sklearn.neighbors as sn
+
+# ไลบรารี่สำหรับเมทริกซ์ระดับสีเทาร่วม (GLCM)
+import skimage.feature as skf
+
+# ไลบรารี่สำหรับการตรวจสอบความแม่นยำของแบบจำลอง
+import sklearn.metrics as sm
+
+# ไลบรารี่สำหรับการแบ่งชุดข้อมูลเป็น 1.ชุดข้อมูลสำหรับฝึกสอน 2.ชุดข้อมูลสำหรับทดสอบ
+import sklearn.model_selection as sms
+
+allClass = {    # allClass เป็น Dict ที่มี key เป็นเลข 1-6 โดยมี value เป็นชื่อ Class
     1: 'green',
     2: 'red',
     3: 'ring',
@@ -17,7 +26,6 @@ allClass = {    # allClass เป็น dict ที่มี key เป็นเ
     6: 'yellow'
 }
 
-
 def featureExtract(img1, img2, className, featureTr, labelTr):
     """ 
     ฟังก์ชันสำหรับสกัดคุณลักษณะ (Feature) ของรูปภาพ โดยมี input ดังนี้
@@ -25,23 +33,23 @@ def featureExtract(img1, img2, className, featureTr, labelTr):
     img2        : รูปภาพระดับสีเทา
     className   : คลาสของรูปภาพดังกล่าว
     featureTr   : ลิสต์ของ Feature
-    labelTr   : ลิสต์ของ Label
+    labelTr     : ลิสต์ของ Label
 
-    และมี output คือ
+    และมี Output คือ
     featureTr   : ลิสต์ของ Feature ที่เพิ่ม Feature ที่ทำการสกัดเข้าไป
-    labelTr   : ลิสต์ของ Label ที่เพิ่ม Label ของ Feature เข้าไป
+    labelTr     : ลิสต์ของ Label ที่เพิ่ม Label ของ Feature เข้าไป
     """
     
     """ ดึงคุณลักษณะ สี (Color) จากรูปภาพ """
 
     # แปลงรูปภาพให้อยู่บนปริภูมิสี HSV
-    img_hsv = cv2.cvtColor(img1, cv2.COLOR_BGR2HSV)
+    img1 = cv2.cvtColor(img1, cv2.COLOR_BGR2HSV)
 
     # แปลงข้อมูลจากเมตริกซ์ให้อยู่ในรูปแบบเวกเตอร์ เฉพาะค่า Hue
-    img_hsv = img_hsv[:,:,0].reshape(1,-1)
+    img1 = img1[:,:,0].reshape(1,-1)
 
     # สร้างฮิสโตแกรมจากค่า Hue โดยช่วงของแต่ละ bin มีความกว้าง = 8 โดยจะมีทั้งหมด 33 bin
-    hist, _ = np.histogram(img_hsv, bins = np.arange(-0.5, 256, 8))
+    hist, _ = np.histogram(img1, bins = np.arange(-0.5, 256, 8))
 
     # Normalization เพื่อทำให้ Feature สามารถรองรับขนาดของรูปภาพที่แตกต่างกันได้
     histNormalize = hist/np.sum(hist)
@@ -55,10 +63,10 @@ def featureExtract(img1, img2, className, featureTr, labelTr):
     glcm = skf.greycomatrix(img2, distances=[1, 2, 3], angles=[0, 45, 90, 135], levels=64, symmetric=True, normed=True)
 
     # สกัดคุณลักษณะ (Feature) จากรูปภาพ
-    featureCon = skf.greycoprops(glcm, 'contrast')[0]       # สกัด contrast จากภาพ  ***** ไปดู Doc ******
-    featureEne = skf.greycoprops(glcm, 'energy')[0]         # สกัด energy จากภาพ    
-    featureHom = skf.greycoprops(glcm, 'homogeneity')[0]    # สกัด homogeneity จากภาพ
-    featureCor = skf.greycoprops(glcm, 'correlation')[0]    # สกัด correlation จากภาพ
+    featureCon = skf.greycoprops(glcm, 'contrast')[0]       # สกัด Contrast จากรูปภาพ 
+    featureEne = skf.greycoprops(glcm, 'energy')[0]         # สกัด Energy จากรูปภาพ    
+    featureHom = skf.greycoprops(glcm, 'homogeneity')[0]    # สกัด Homogeneity จากรูปภาพ
+    featureCor = skf.greycoprops(glcm, 'correlation')[0]    # สกัด Correlation จากรูปภาพ
 
     # รวม Feature ต่าง ๆ เป็นลิสต์ 1 มิติ
     features = np.hstack((featureCon, featureEne, featureHom, featureCor, histNormalize))
@@ -98,9 +106,6 @@ def train():
                 image2 = cv2.flip(image2, 1)
                 featureTr, labelTr = featureExtract(image1, image2, classname, featureTr, labelTr)
 
-    # # แปลงคุณลักษณะ (Feature) ที่สกัดออกมาให้อยู่ในรูปลิสต์ของ Numpy
-    # np.array(featureTr)
-
     # แบ่งชุดข้อมูล เป็น 1. ชุดข้อมูลสำหรับฝึกสอน (feature_train, label_train) 2.ชุดข้อมูลสำหรับทดสอบ (feature_test, label_test)
     feature_train, feature_test, label_train, label_test = sms.train_test_split(featureTr, labelTr, test_size=0.1)
 
@@ -118,7 +123,6 @@ def train():
 
     # แสดงผลลัพธ์ที่คาดหวังและผลลัพธ์จากการทำนายของแบบจำลอง KNN
     print("Result")
-    print("-" * 20)
     print("Expect: ", label_test)
     print("KNN prediction: ", knn_pred)
 
@@ -131,8 +135,8 @@ def test():
     
     """
     
-    featureTr = []  # featureTr ใช้เก็บคุณลักษณะ (Feature) ที่สกัดออกมาเพื่อนำไปใช้ในการฝึกสอน
-    labelTr = []    # labelTr ใช้เก็บ ชื่อของ Class เพื่อนำไปจับกับค่าใน featureTr
+    featureTs = []  # featureTs ใช้เก็บคุณลักษณะ (Feature) ที่สกัดออกมาเพื่อนำไปใช้ในการทดสอบ
+    labelTs = []    # labelTs ใช้เก็บ ชื่อของ Class เพื่อนำไปจับกับค่าใน featureTs
     
     # ที่อยู่ของรูปภาพที่ใช้สำหรับทดสอบ
     path = "Tr/yellow/DSC00267.jpg" 
@@ -143,13 +147,13 @@ def test():
     # ดึงรูปภาพที่ใช้สำหรับทดสอบมาทำการจำแนกหมวดหมู่
     image1 = cv2.imread(path)       # รูปภาพสี
     image2 = cv2.imread(path, 0)    # รูปภาพระดับสีเทา
-    featureExtract(image1, image2, 'Test', featureTr, labelTr)  # สกัดคุณลักษณะ (Feature) จากรูปภาพที่ใช้สำหรับทดสอบ
+    featureExtract(image1, image2, 'Test', featureTs, labelTs)  # สกัดคุณลักษณะ (Feature) จากรูปภาพที่ใช้สำหรับทดสอบ
 
     # ทำนาย Class ของรูปภาพที่ใช้สำหรับทดสอบ
-    knn_pred = knn_model.predict(featureTr)
+    knn_pred = knn_model.predict(featureTs)
 
     # แสดงผลลัพธ์จากการทำนายของแบบจำลอง KNN
     print("KNN prediction: ", *knn_pred)
 
-train()
+# train() # ในกรณีที่ต้องการสร้างและฝึกฝนแบบจำลองใหม่
 test()
