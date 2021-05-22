@@ -143,7 +143,6 @@ def train():
 
     # แสดงค่าความแม่นยำของแบบจำลอง
     print("Accuracy:", sm.accuracy_score(test_y, predictions) * 100, '%')
-    print(test_y)
 
 def test():
     """
@@ -158,7 +157,7 @@ def test():
     
     """ โหลดข้อมูลรูปภาพ """
     # กำหนดที่อยู่ของรูปภาพ
-    image_path = 'dataset/Tr/green/DSC00054.JPG'
+    image_path = 'dataset/Tr/green/DSC00041.JPG'
     
     # โหลดข้อมูลรูปภาพเข้าสู่โปรแกรม
     img = imread(image_path, as_gray=True)

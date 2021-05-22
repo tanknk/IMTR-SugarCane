@@ -1,1 +1,3 @@
 imtr/**/*
+.DS_Store
+*.pyc
