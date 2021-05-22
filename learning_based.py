@@ -125,12 +125,10 @@ def train():
 
         """ ประมาณการประสิทธิภาพจากการฝึกสอน """
         loss_train = criterion(output_train, y_train)
-        train_losses.append(loss_train)
 
         # คำนวณน้ำหนักในการอัปเดตของแบบจำลองทั้งหมด
         loss_train.backward()
         optimizer.step()
-        tr_loss = loss_train.item()
 
 
     # บันทึกแบบจำลอง
