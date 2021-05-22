@@ -22,10 +22,12 @@ python handcraft_based.py
 ### วิธีการเปลี่ยนรูป dataset 📷
 <img src='./img/1.jpg' />
 ### Project 3: Learning_base 🤖🔧🦾🦿
+
 ### วิธีการรัน Code 🏃‍♀️🏃‍♂
 ```python
 python learning_based.py
 ```
+
 โดยจะมีการเรียกใช้ฟังก์ชัน 2 ฟังก์ชัน
 1. ฟังก์ชัน train()
 เมื่อรันเสร็จจะได้  ``` cnn_model.pt ``` ออกมาซึ่งก็คือแบบจำลองนั่นเอง<br>
