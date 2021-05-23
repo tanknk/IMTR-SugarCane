@@ -149,7 +149,7 @@ def test():
     
     """ โหลดข้อมูลรูปภาพ """
     # กำหนดที่อยู่ของรูปภาพ
-    image_path = 'dataset/Tr/red/DSC00060.JPG'
+    image_path = 'dataset/Ts/ring.JPG'
     
     # โหลดข้อมูลรูปภาพเข้าสู่โปรแกรม
     img = imread(image_path, as_gray=True)

@@ -136,7 +136,7 @@ def test():
     labelTs = []    # labelTs ใช้เก็บ ชื่อของ Class เพื่อนำไปจับกับค่าใน featureTs
     
     # ที่อยู่ของรูปภาพที่ใช้สำหรับทดสอบ
-    path = "dataset/Tr/yellow/DSC00267.jpg" 
+    path = "dataset/Ts/spot.jpg" 
 
     # ดึงแบบจำลองที่บันทึกไว้มาใช้งาน
     knn_model = load('Classifier/knn_model.joblib')
