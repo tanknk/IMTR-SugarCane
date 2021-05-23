@@ -1,5 +1,4 @@
-import torch
-from torch.nn import Linear, ReLU, Sequential, Conv2d, MaxPool2d, Module, BatchNorm2d, Dropout
+from torch.nn import Linear, ReLU, Sequential, Conv2d, MaxPool2d, Module, BatchNorm2d
 
 # คลาส Net ใช้สำหรับการกำหนดโครงสร้าง (Architecture) ของ Convolution Neural Network
 class Net(Module): 
