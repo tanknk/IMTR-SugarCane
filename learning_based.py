@@ -127,6 +127,8 @@ def train():
     # โดยปกติแล้วจะบันทึกอยู่ในรูปแบบ .pt หรือ .pth (ในกรณีที่ต้องการบันทึกแบบจำลอง)
     # torch.save(model, 'cnn_model.pt')
     
+    """ ทดสอบการจำแนกหมวดหมู่ของรูปภาพด้วยแบบจำลอง """
+    # สร้างการคาดการณ์สำหรับชุดทดสอบ
     with torch.no_grad():
         output = model(test_x)
     softmax = torch.exp(output).cpu()
