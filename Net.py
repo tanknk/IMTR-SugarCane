@@ -5,6 +5,7 @@ from torch.nn import Linear, ReLU, Sequential, Conv2d, MaxPool2d, Module, BatchN
 class Net(Module): 
     def __init__(self): # กำหนดโครงสร้างภายใน Constructor ของคลาส Net
         super(Net, self).__init__()
+        
         """ Feature extraction """
         self.cnn_layers = Sequential(
             # สร้างเลเยอร์ของ 2D Convolution

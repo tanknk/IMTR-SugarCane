@@ -37,7 +37,7 @@ def train():
                 # โหลดข้อมูลรูปภาพเข้าสู่โปรแกรม
                 img = imread('dataset/Tr/' + classname + '/' + id, as_gray=True)
                 
-                # กลับ (Flip) รูปภาพสำหรับทำ Data Augmentaion -> เพื่อเพิ่มชุดข้อมูล (dataset)
+                # กลับ (Flip) รูปภาพสำหรับทำ Data augmentaion -> เพื่อเพิ่มชุดข้อมูล (dataset)
                 img1 = cv2.flip(img, 1)
 
                 # ปรับขนาดรูปภาพให้มีขนาด ... x ...
@@ -85,7 +85,6 @@ def train():
     test_y = test_y.astype(int)
     test_y = torch.from_numpy(test_y).to(torch.float32)
 
-
     """ กำหนดอัลกอลิทึมสำหรับการเรียนรู้ """
     # นำเข้าแบบจำลองจากไฟล์ Net.py
     model = Net()
@@ -97,16 +96,12 @@ def train():
     criterion = CrossEntropyLoss()
 
     """ การฝีกสอนแบบจำลอง """
-    # สร้าง List สำหรับเก็บ loss
-    train_losses = []
-    
     # กำหนดจำนวนรอบการฝึกสอน
     n_epochs = 20
 
     # ฝึกสอนแบบจำลอง
     for epoch in t.tqdm(range(n_epochs)):
         model.train()
-        tr_loss = 0
         
         # นำเข้าชุดข้อมูลสำหรับฝึกสอน
         x_train, y_train = Variable(train_x), Variable(train_y)
@@ -117,19 +112,16 @@ def train():
         # การทำนายผลลัพธ์ของชุดข้อมูลสำหรับฝึกสอน
         output_train = model(x_train)
 
-        
         # แปลงให้อยู่ในรูปแบบที่เหมาะสม
         y_train = y_train.long()
         y_train = y_train.squeeze_()
     
-
         """ ประมาณการประสิทธิภาพจากการฝึกสอน """
         loss_train = criterion(output_train, y_train)
 
         # คำนวณน้ำหนักในการอัปเดตของแบบจำลองทั้งหมด
         loss_train.backward()
         optimizer.step()
-
 
     # บันทึกแบบจำลอง
     # โดยปกติแล้วจะบันทึกอยู่ในรูปแบบ .pt หรือ .pth (ในกรณีที่ต้องการบันทึกแบบจำลอง)
@@ -157,7 +149,7 @@ def test():
     
     """ โหลดข้อมูลรูปภาพ """
     # กำหนดที่อยู่ของรูปภาพ
-    image_path = 'dataset/Tr/green/DSC00041.JPG'
+    image_path = 'dataset/Tr/red/DSC00060.JPG'
     
     # โหลดข้อมูลรูปภาพเข้าสู่โปรแกรม
     img = imread(image_path, as_gray=True)
@@ -191,7 +183,6 @@ def test():
     predictions = np.argmax(prob, axis=1)
     
     print("Prediction:" , *list(map(lambda x:  list_name[x], predictions)))
-
 
 # train() # ในกรณีที่ต้องการสร้างและฝึกฝนแบบจำลองใหม่
 test()

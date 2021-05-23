@@ -41,7 +41,6 @@ def featureExtract(img1, img2, className, featureTr, labelTr):
     """
     
     """ ดึงคุณลักษณะ สี (Color) จากรูปภาพ """
-
     # แปลงรูปภาพให้อยู่บนปริภูมิสี HSV
     img1 = cv2.cvtColor(img1, cv2.COLOR_BGR2HSV)
 
@@ -75,7 +74,6 @@ def featureExtract(img1, img2, className, featureTr, labelTr):
     labelTr.append(className)
 
     return featureTr, labelTr
-
 
 def train():
     """
@@ -132,7 +130,6 @@ def train():
 def test():
     """
     เป็นฟังก์ชันสำหรับการทดสอบ (Test) แบบจำลองด้วยข้อมูลจากแหล่งอื่น ๆ นอกเหนือจากใน dataset
-    
     """
     
     featureTs = []  # featureTs ใช้เก็บคุณลักษณะ (Feature) ที่สกัดออกมาเพื่อนำไปใช้ในการทดสอบ
@@ -147,7 +144,9 @@ def test():
     # ดึงรูปภาพที่ใช้สำหรับทดสอบมาทำการจำแนกหมวดหมู่
     image1 = cv2.imread(path)       # รูปภาพสี
     image2 = cv2.imread(path, 0)    # รูปภาพระดับสีเทา
-    featureExtract(image1, image2, 'Test', featureTs, labelTs)  # สกัดคุณลักษณะ (Feature) จากรูปภาพที่ใช้สำหรับทดสอบ
+
+    # สกัดคุณลักษณะ (Feature) จากรูปภาพที่ใช้สำหรับทดสอบ
+    featureExtract(image1, image2, 'Test', featureTs, labelTs)  
 
     # ทำนาย Class ของรูปภาพที่ใช้สำหรับทดสอบ
     knn_pred = knn_model.predict(featureTs)
